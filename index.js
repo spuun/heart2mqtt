@@ -10,7 +10,13 @@ class Logger {
     this.level = typeof level === 'undefined' ? 1 : level
   }
   format() {
-    return [arguments].join(' ')
+    return [...arguments].map(item => {
+      if (item instanceof Object) {
+        return JSON.stringify(item)
+      } else {
+        return item
+      }
+    }).join(' ')
   }
   debug() {
     if (this.level > Logger.Level.debug) { return; }
@@ -49,9 +55,9 @@ let init = async () => {
   try {
     devices = await heart.devices
     const k = Object.keys(devices)[0]
-    console.log('k', k)
+    logger.info('k', k)
     const f = await devices[k].functions
-    console.log('funcs', f)
+    logger.info('funcs', f)
   } catch (ex) {
     logger.error('Error init', ex)
   }
