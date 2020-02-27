@@ -1,0 +1,15 @@
+{
+  "name": "animusheart-websocket",
+  "version": "1.0.0",
+  "description": "Testing animus hear websocket api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "jons-animusheart": "^1.0.0"
+  }
+}
