@@ -13,33 +13,32 @@ class Logger {
     return [arguments].join(' ')
   }
   debug() {
-    if (this.level > Logger.level.debug) { return; }
+    if (this.level > Logger.Level.debug) { return; }
     console.debug('[DEBUG]', this.format(...arguments))
   }
   info() {
-    if (this.level > Logger.level.info) { return; }
+    if (this.level > Logger.Level.info) { return; }
     console.info('[INFO]', this.format(...arguments))
   }
   warn() {
-    if (this.level > Logger.level.warn) { return; }
+    if (this.level > Logger.Level.warn) { return; }
     console.warn('[WARN]', this.format(...arguments))
   }
   error() {
     console.error('[ERROR]', this.format(...arguments))
   }
 }
-Logger.level = {
+Logger.Level = {
   debug: 0,
   info: 1,
   warn: 2,
   error: 3
 }
 
-const logger = new Logger(Logger.level.debug)
-const heartOpts = {
-  cache: new AnimusHeart.cache.FileCache('./cache', { "ttl": 0, logger }),
-  logger
-}
+const logger = new Logger(Logger.Level.debug)
+const cache = new AnimusHeart.Cache.FileCache('./cache', { ttl: 0, logger })
+const heartOpts = { cache, logger }
+
 const heart = new AnimusHeart(process.env.ANIMUS_IP,
                               process.env.ANIMUS_APIKEY,
                               heartOpts)
