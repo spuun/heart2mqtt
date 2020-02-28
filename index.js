@@ -1,5 +1,4 @@
 require('dotenv').config()
-const WebSocket = require('ws')
 const AnimusHeart = require('jons-animusheart')
 
 const apiKey = process.env.ANIMUS_APIKEY
@@ -8,6 +7,14 @@ const wsProtocol = 'AHauth'
 class Logger {
   constructor(level) {
     this.level = typeof level === 'undefined' ? 1 : level
+  }
+  _ts() {
+    const d = new Date()
+    return [
+      d.getHours().toString().padStart(2,'0'),
+      d.getMinutes().toString().padStart(2,'0'),
+      d.getSeconds().toString().padStart(2,'0')
+    ].join(':')
   }
   format() {
     return [...arguments].map(item => {
@@ -20,18 +27,18 @@ class Logger {
   }
   debug() {
     if (this.level > Logger.Level.debug) { return; }
-    console.debug('[DEBUG]', this.format(...arguments))
+    console.debug(this._ts(), '[DEBUG]', this.format(...arguments))
   }
   info() {
     if (this.level > Logger.Level.info) { return; }
-    console.info('[INFO]', this.format(...arguments))
+    console.info(this._ts(), '[INFO]', this.format(...arguments))
   }
   warn() {
     if (this.level > Logger.Level.warn) { return; }
-    console.warn('[WARN]', this.format(...arguments))
+    console.warn(this._ts(), '[WARN]', this.format(...arguments))
   }
   error() {
-    console.error('[ERROR]', this.format(...arguments))
+    console.error(this._ts(), '[ERROR]', this.format(...arguments))
   }
 }
 Logger.Level = {
@@ -53,11 +60,14 @@ let devices = {}
 
 let init = async () => {
   try {
-    devices = await heart.devices
-    const k = Object.keys(devices)[0]
-    logger.info('k', k)
-    const f = await devices[k].functions
-    logger.info('funcs', f)
+//    devices = await heart.devices
+//    for (let d in devices) {
+//      console.log(await devices[d])
+//    }
+//    console.log(devices)
+//    const k = Object.keys(devices)[0]
+//    const f = await devices[k].functions
+    heart.events.subscribe(d => logger.debug("[DATA]", d.data))
   } catch (ex) {
     logger.error('Error init', ex)
   }
