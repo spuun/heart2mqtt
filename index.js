@@ -22,7 +22,7 @@ function heartEvent2MqttTopic(d) {
   return `heart/${deviceId}/${funcId}/${d.propertyName}`
 }
 
-const init = async () => {
+async function init() {
   try {
     const client = mqtt.connect(process.env.MQTT_URL, {
       clientid: 'heart2mqtt',
@@ -35,7 +35,9 @@ const init = async () => {
     client.on('reconnect', _ => logger.info('[MQTT] Reconnecting'))
     heart.events.subscribe(d => {
       logger.info("[DATA]", d)
-      client.publish(heartEvent2MqttTopic(d), d.data)
+      const topic = heartEvent2MqttTopic(d)
+      logger.debug(`[MQTT] Publishing to ${topic}`)
+      client.publish(topic, JSON.stringify(d.property))
     })
   } catch (ex) {
     logger.error('Error init', ex)

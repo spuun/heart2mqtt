@@ -13,6 +13,9 @@ class Logger {
   format() {
     return [...arguments].map(item => {
       if (typeof item == 'object') {
+        if (typeof item.toLog == 'function') {
+          return item.toLog()
+        }
         return JSON.stringify(item)
       } else {
         return item
