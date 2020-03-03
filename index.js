@@ -7,15 +7,14 @@ const apiKey = process.env.ANIMUS_APIKEY
 const wsProtocol = 'AHauth'
 
 
-const logger = new Logger(Logger.Level.Info)
-const cache = new AnimusHeart.Cache.FileCache('./cache', { ttl: 0, logger })
+const logger = new Logger(Logger.Level.debug)
+const cacheOpts = { ttl: 0, logger }
+const cache = new AnimusHeart.Cache.FileCache('./cache', cacheOpts)
 const heartOpts = { cache, logger }
-
 const heart = new AnimusHeart(process.env.ANIMUS_IP,
                               process.env.ANIMUS_APIKEY,
                               heartOpts)
 logger.info('Heart', heart)
-
 
 const init = async () => {
   try {
