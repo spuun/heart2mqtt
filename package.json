@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "jons-animusheart": "spuun/node-jons-animusheart"
+    "jons-animusheart": "github:spuun/node-jons-animusheart",
+    "mqtt": "^3.0.0"
   }
 }
